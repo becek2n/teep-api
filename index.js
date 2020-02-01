@@ -17,8 +17,10 @@ app.get("/", (req, resp) => {
     resp.json({ info : "node started" })
 });
 
+
 var routesUser = require('./Routes/Route'); //importing route
 routesUser(app); 
+
 
 app.listen(port, () => {
 console.log(`App running on port ${port}.`)
