@@ -11,7 +11,7 @@ var LocationModel = function(location){
 };
 
 LocationModel.getData = function (result) {
-    sql.query('select * from "MasterLocation" order by "Name"', function (err, res) {             
+    sql.query('select * from "MasterLocation" order by "LocationName"', function (err, res) {             
         if(err) {
             console.log("error: ", err);
         }

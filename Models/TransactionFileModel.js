@@ -1,29 +1,32 @@
 module.exports = (sequelize, Sequelize) => {
-    const TransactionBuyDetail = sequelize.define("TransactionBuyDetail", {
+    const TransactionFile = sequelize.define("TransactionFile", {
         UID: {
             type: Sequelize.UUID,
             primaryKey: true,
             defaultValue: Sequelize.UUIDV1
         },
-        TransactionCode: {
+        TransactionUID: {
+            type: Sequelize.UUID
+        },
+        FileName: {
             type: Sequelize.STRING
         },
-        UIDWallet: {
+        FilePath:{
             type: Sequelize.STRING
         },
-        Rate:{
-            type: Sequelize.DECIMAL
+        FileType:{
+            type: Sequelize.STRING
         },
-        Amount:{
-            type: Sequelize.DECIMAL
+        StatusCodeFile:{
+            type: Sequelize.INTEGER
         },
     },
     {
         timestamps: false,
         freezeTableName: true,
-        tableName: "TransactionBuyDetail"
+        tableName: "TransactionFile"
     }
     );
 
-    return TransactionBuyDetail;
+    return TransactionFile;
 }

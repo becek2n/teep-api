@@ -1,55 +1,72 @@
 'use strict';
+const db = require("../Models");
+const sequelize = db.sequelize;
+const userModel = db.User;
 
-var userModel = require('../Models/UserModel');
-
-exports.getUsers = function(req, res) {
-  userModel.getUsers(function(err, task) {
-    console.log('controller user')
-    if (err){
-        res.send(err);
-        console.log('res user', task);
-    }
-    else{
-        res.status(200).json(task);
-    }
+exports.findAll = (req, res) => {
+  userModel.findAll({ 
+    raw: true
+  })
+  .then(data => {
+    res.status(200).json({responseCode: 200, responseMessage: "Ok", responseData: data});
+  })
+  .catch(err => {
+      res.status(500).json({responseCode: 500, responseMessage: "error", responseData: err.message});
   });
 };
 
-exports.getUserById = function(req, res) {
-    userModel.getUserById(req.params.id, function(err, user) {
-    console.log('controller user getid')
-    if (err)
-      res.send(err);
-      console.log('res user getid', user);
-    res.status(200).json(user);
+exports.findById = (req, res) => {
+  userModel.findAll({ 
+    raw: true, 
+    where: {
+      ID: req.params.id
+    }
+  })
+  .then(data => {
+    res.status(200).json({responseCode: 200, responseMessage: "Ok", responseData: data});
+  })
+  .catch(err => {
+      res.status(500).json({responseCode: 500, responseMessage: "error", responseData: err.message});
   });
 };
 
-exports.getUserByUserName = function(req, res) {
-    userModel.getUserByUserName(req.params.username, function(err, user) {
-    console.log('controller user get username')
-    if (err)
-      res.send(err);
-      console.log('res user get username', user);
-    res.status(200).json(user);
+exports.findUserLogin = (req, res) => {
+  userModel.findAll({ 
+    raw: true, 
+    where: {
+      Phone: req.params.user,
+      Password: req.params.password
+    }
+  })
+  .then(data => {
+    res.status(200).json({responseCode: 200, responseMessage: "Ok", responseData: data});
+  })
+  .catch(err => {
+      res.status(500).json({responseCode: 500, responseMessage: "error", responseData: err.message});
   });
 };
 
-exports.insert = function(req, res) {
-    var user = req.body;
+exports.create = (req, res) => {
+  var _user = req.body;
+  if(!_user.fullName || !_user.phoneNumber || !_user.email || !_user.password ){
+    res.status(500).json({responseCode : 500, responseMessage : "Error", responseData :  "Bad request to server."});
+    return;
+  }
 
-    //handles null error 
-    if(!user.username || !user.fullname || !user.password || !user.role){
-        res.status(400).send({ error:true, message: 'Please provide autodebet_bank_nmsing' });
-    }
-    else{
-        userModel.createUser(user, function(err, response) {
-            if (err)
-                res.send(err);
-            //res.json(auto);
-            res.statusCode = 200;
-            res.status = "Ok";
-            return res.json();
-        });
-    }
+  var userData = {
+    UserName: _user.fullName,
+    FullName: _user.fullName,
+    Email: _user.email,
+    Phone: _user.phoneNumber,
+    Password: _user.password
+  }
+  userModel.create(userData)
+    .then(data => {
+      res.status(200).json({responseCode: 200, responseMessage: "Ok", responseData: [data]});
+    })
+    .catch(err => {
+      res.status(500).json({responseCode: 500, responseMessage: "error", responseData: err.message});
+    });
 };
+
+

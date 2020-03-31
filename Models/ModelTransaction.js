@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const TransactionBuy = sequelize.define("TransactionBuy", {
+    const Transaction = sequelize.define("Transaction", {
         UID: {
             type: Sequelize.UUID,
             primaryKey: true,
@@ -20,7 +20,7 @@ module.exports = (sequelize, Sequelize) => {
         PickupCode:{
             type: Sequelize.STRING
         },
-        UserName:{
+        UserID:{
             type: Sequelize.STRING
         },
         RateTotal:{
@@ -33,9 +33,9 @@ module.exports = (sequelize, Sequelize) => {
     {
         timestamps: false,
         freezeTableName: true,
-        tableName: "TransactionBuy"
+        tableName: "Transaction"
     }
     );
 
-    return TransactionBuy;
+    return Transaction;
 }

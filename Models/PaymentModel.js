@@ -10,7 +10,7 @@ var PaymentModel = function(payment){
 };
 
 PaymentModel.getData = function (result) {
-    sql.query('select * from "MasterPayment" order by "Name"', function (err, res) {             
+    sql.query('select * from "MasterPayment" order by "PaymentName"', function (err, res) {             
         if(err) {
             console.log("error: ", err);
         }

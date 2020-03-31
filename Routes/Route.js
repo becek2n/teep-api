@@ -47,12 +47,12 @@ module.exports = function(app) {
    app.route('/country/:id').get(countryController.findOne);
    
    var userController = require('../Controllers/UserController');
-   app.route('/user').get(userController.getUsers);
-   app.route('/user/:id').get(userController.getUserById);
-   app.route('/user').post(userController.insert);
-   app.route('/user/:username/:password').get(userController.getUserByUserName);
-   app.route('/update').get(userController.getUsers);
-   app.route('/delete').get(userController.getUsers);
+   app.route('/user').get(userController.findAll);
+   app.route('/user/:id').get(userController.findById);
+   app.route('/user').post(userController.create);
+   app.route('/user/:user/:password').get(userController.findUserLogin);
+   //app.route('/update').get(userController.getUsers);
+   //app.route('/delete').get(userController.getUsers);
    
    var currencyController = require('../Controllers/CurrencyController');
    app.route('/currency').get(currencyController.getCurrency);
@@ -63,17 +63,22 @@ module.exports = function(app) {
    app.route('/scrap/currency/').get(scrappingWebController.getCurrency);
 
    //transaction
-   var transactionController = require('../Controllers/TransactionController');
-   app.route('/transaction/find/').post(transactionController.getDataByRate);
+   //var transactionController = require('../Controllers/TransactionController');
+   //app.route('/transaction/find/').post(transactionController.getDataByRate);
 
    //transaction buy
-   var transactionBuyController = require('../Controllers/TransactionBuyController');
-   app.route('/transaction/rate/').post(transactionBuyController.findRate);
-   app.route('/transaction/').get(transactionBuyController.findAll);
-   app.route('/transaction/:code').get(transactionBuyController.findOne);
-   app.route('/transaction/insert/').post(transactionBuyController.create);
-   app.route('/transaction/insert/detail/').post(transactionBuyController.createDetail);
-   app.route('/transaction/detail/:code').get(transactionBuyController.findDetailByCode);
+   var transactionController = require('../Controllers/TransactionController');
+   app.route('/transaction/rate/').post(transactionController.findRate);
+   app.route('/transaction/').get(transactionController.findAll);
+   app.route('/transaction/user/:userid/:pageSize/:pageIndex').get(transactionController.findByUserId);
+   app.route('/transaction/:code').get(transactionController.findOne);
+   app.route('/transaction/id/:id').get(transactionController.findByID);
+   app.route('/transaction/insert/').post(transactionController.create);
+   app.route('/transaction/insert/detail/').post(transactionController.createDetail);
+   app.route('/transaction/detail/:code').get(transactionController.findDetailByCode);
+   
+   //upload transaction file
+   app.route('/transaction/file/').post(transactionController.uploadFile);
    
 
    //location

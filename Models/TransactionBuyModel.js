@@ -2,7 +2,7 @@
 
 var sql = require('../Config/db');
 
-var TransactionBuyModel = function(transaction){
+var TransactionModel = function(transaction){
     this.UID = transaction.UID;
     this.TransactionCode = transaction.TransactionCode;
     this.CurrencyCode = transaction.CurrencyCode;
@@ -14,8 +14,8 @@ var TransactionBuyModel = function(transaction){
     this.VolumeTotal = transaction.VolumeTotal;
 };
 
-TransactionBuyModel.getData = function (result) {
-    sql.query('SELECT * from "TransactionBuy"', function (err, res) {             
+TransactionModel.getData = function (result) {
+    sql.query('SELECT * from "Transaction"', function (err, res) {             
         if(err) {
             result(err, null);
         }
@@ -26,8 +26,8 @@ TransactionBuyModel.getData = function (result) {
     });   
 };
 
-TransactionBuyModel.insert = function (req, result) {
-    var sqldata = 'insert into "TransactionBuy" ("TransactionCode", "CurrencyCode", "PaymentCode", "LocationCode", "PickupCode", "UserName", "RateTotal", "VolumeTotal") ' + 
+TransactionModel.insert = function (req, result) {
+    var sqldata = 'insert into "Transaction" ("TransactionCode", "CurrencyCode", "PaymentCode", "LocationCode", "PickupCode", "UserName", "RateTotal", "VolumeTotal") ' + 
             'values ($1, $2, $3, $4, $5, $6, $7, $8)';
     // Retrieve the data to insert from the POST body
     var data = [
@@ -51,8 +51,8 @@ TransactionBuyModel.insert = function (req, result) {
     });
 };
 
-TransactionBuyModel.insertDetail = function (req, result) {
-    var sqldata = 'insert into "TransactionBuyDetail" ("TransactionCode", "UIDWallet", "Amount", "Rate") ' + 
+TransactionModel.insertDetail = function (req, result) {
+    var sqldata = 'insert into "TransactionDetail" ("TransactionCode", "UIDWallet", "Amount", "Rate") ' + 
             'values ($1, $2, $3, $4)';
     // Retrieve the data to insert from the POST body
     var data = [
@@ -81,7 +81,7 @@ TransactionBuyModel.insertDetail = function (req, result) {
 
         sql.query(sqldata, data, function (err, res) {       
             if (shouldAbort(err)) {
-                sql.query('delete from "TransactionBuy" where "TransactionCode" = $1', [req.TransactionCode], function (errDelete, resDelete) {             
+                sql.query('delete from "Transaction" where "TransactionCode" = $1', [req.TransactionCode], function (errDelete, resDelete) {             
                     if(err) {
                         console.log("error delete transaction buy: ", errDelete);
                         result(errDelete, null);
@@ -102,4 +102,4 @@ TransactionBuyModel.insertDetail = function (req, result) {
     
 };
 
-module.exports = TransactionBuyModel;
+module.exports = TransactionModel;
