@@ -1,4 +1,8 @@
-const dbConfig = require("../config/db-config");
+//const dbConfig = require("../config/db-config");
+const dbConfig = require("../config/db-config-heroku");
+
+var pg = require('pg');
+pg.defaults.ssl = true;
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -6,6 +10,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   dialect: dbConfig.dialect,
   dialectOptions: { decimalNumbers: true },
   //operatorsAliases: false,
+  ssl: true,
   pool: {
     max: dbConfig.pool.max,
     min: dbConfig.pool.min,
